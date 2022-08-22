@@ -1,0 +1,24 @@
+name: ci-cd
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-east-1
+
+permissions:
+  id-token: write
+
+jobs:
+  cloudfront:
+    name: Deploy CloudFront
+    runs-on: ubuntu-22.04
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::390827140588:role/formit-github-actions-deployment-system
+          role-session-name: assume-deployment-role
+          aws-region: ${{ env.AWS_REGION }}
